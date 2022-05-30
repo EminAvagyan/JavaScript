@@ -25,23 +25,28 @@
        
        function selectSize(){
            const gameAreaSize = document.getElementById("select").value
-        const json = createPlace()
-        console.log(json)
-        const k = randomItems(json)
-        console.log(k)
-        clearGameArea()
-        createGameArea(json, gameAreaSize)
+            const json = createGameArray()
+
+
+            console.log(json)
+            
+
+            randomChapar(json, gameAreaSize)
+            randomWolfes(json, gameAreaSize)
+            randomTun(json, gameAreaSize)
+            randomNap(json, gameAreaSize)
         
        }
        
        const gallery= new Array();
 
-        gallery[0]="images/gamewolf.png";
-        gallery[1]="images/ban.png";
-        gallery[2]="images/home.png";
-        gallery[3]="images/rabbit.png";
+        gallery[1]="images/gamewolf.png";
+        gallery[2]="images/ban.png";
+        gallery[3]="images/home.png";
+        gallery[4]="images/rabbit.png";
 
-        function createPlace() {
+
+        function createGameArray() {
 
             const value = parseInt(document.getElementById('select').value);
 
@@ -52,6 +57,92 @@
             return gameCondition
         }
         
+        
+
+        function createGameArea(array, gameAreaSize){
+            array.map((item)=>{
+            item.map((item)=>{
+                if(item == 0){
+                    createInnerDivs(gameAreaSize)
+                }
+            })
+        })
+        }
+    
+
+        function randomWolfes(myArray, num){
+            let num1 = parseInt(num)
+            num1 === 10 ? num1 -= 4: num1 -= 2 
+            // const random = Math.floor(Math.random()*num)
+
+            for(let i = 0; i < num1; i++){
+                let random1 = Math.floor(Math.random()*num)
+                let random = Math.floor(Math.random()*num)
+                
+                if(myArray[random1][random] == 0){
+                    myArray[random1][random] = 1
+                } else {
+                    num1+=1
+                }
+                
+            }
+            // return myArray
+        }
+
+        function randomChapar(myArray, num){
+            let num1 = parseInt(num)
+            num1 === 10 ? num1 -= 6: num1 -= 3 
+            // const random = Math.floor(Math.random()*num)
+
+            for(let i = 0; i < num1; i++){
+                let random1 = Math.floor(Math.random()*num)
+                let random = Math.floor(Math.random()*num)
+                
+                if(myArray[random1][random] == 0){
+                    myArray[random1][random] = 2
+                } else {
+                    num1+=1
+                }
+                
+            }
+            return myArray
+        }
+
+        function randomTun(myArray, num){
+            // const random = Math.floor(Math.random()*num)
+
+                let random1 = Math.floor(Math.random()*num)
+                let random = Math.floor(Math.random()*num)
+                
+                if(myArray[random1][random] == 0){
+                    myArray[random1][random] = 3
+                } else {
+                    randomChapar(myArray)
+                }
+                
+            return myArray
+        }
+
+        function randomNap(myArray, num){
+            // const random = Math.floor(Math.random()*num)
+
+                let random1 = Math.floor(Math.random()*num)
+                let random = Math.floor(Math.random()*num)
+                
+                if(myArray[random1][random] == 0){
+                    myArray[random1][random] = 4
+                } else {
+                    randomChapar(myArray)
+                }
+                
+            return myArray
+        }
+
+        function clearGameArea(){
+            const containerNode = document.getElementById("game_area")
+            containerNode.innerHTML = ''
+        }
+
         function createInnerDivs(optionValue){
             
             
@@ -74,25 +165,6 @@
             containerNode.append(div)
                     
         }
-
-        function createGameArea(array, gameAreaSize){
-            array.map((item)=>{
-            item.map((item)=>{
-                if(item == 0){createInnerDivs(gameAreaSize)}
-            })
-        })
-        }
-
-        function randomItems(myArray){
-            const randomItem = myArray[Math.floor(Math.random()*myArray.length)]
-            return randomItem
-        }
-
-        function clearGameArea(){
-            const containerNode = document.getElementById("game_area")
-            containerNode.innerHTML = ''
-        }
-      
     </script>
 </body>
 
