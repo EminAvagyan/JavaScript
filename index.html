@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>This is the title of the webpage!</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class = "container">
+        <div class="header">
+            <button onclick="selectSize()">Select Size</button>
+            <select id = "select">
+                <option value = "5">5X5</option>
+                <option value = "7">7X7</option>
+                <option value = "10">10X10</option>
+            </select>
+        </div>
+        <div class = "game_area" id = "game_area">
+
+        </div>
+    </div>
+    <script>
+       
+       
+       function selectSize(){
+           const gameAreaSize = document.getElementById("select").value
+        const json = createPlace()
+        console.log(json)
+        const k = randomItems(json)
+        console.log(k)
+        clearGameArea()
+        createGameArea(json, gameAreaSize)
+        
+       }
+       
+       const gallery= new Array();
+
+        gallery[0]="images/gamewolf.png";
+        gallery[1]="images/ban.png";
+        gallery[2]="images/home.png";
+        gallery[3]="images/rabbit.png";
+
+        function createPlace() {
+
+            const value = parseInt(document.getElementById('select').value);
+
+            const gameCondition = new Array(value).fill(0).map(() => new Array(value).fill(0));
+            
+            
+            // console.log (gameCondition);
+            return gameCondition
+        }
+        
+        function createInnerDivs(optionValue){
+            
+            
+            const containerNode = document.getElementById("game_area")
+
+            if(optionValue == 5){
+                containerNode.style.width = "330px"
+            }
+
+            if(optionValue == 7){
+                containerNode.style.width = "450px"
+            }
+
+            if(optionValue == 10){
+                containerNode.style.width = "630px"
+            }
+
+            // containerNode.innerHTML = ''
+            const div = document.createElement("div")
+            containerNode.append(div)
+                    
+        }
+
+        function createGameArea(array, gameAreaSize){
+            array.map((item)=>{
+            item.map((item)=>{
+                if(item == 0){createInnerDivs(gameAreaSize)}
+            })
+        })
+        }
+
+        function randomItems(myArray){
+            const randomItem = myArray[Math.floor(Math.random()*myArray.length)]
+            return randomItem
+        }
+
+        function clearGameArea(){
+            const containerNode = document.getElementById("game_area")
+            containerNode.innerHTML = ''
+        }
+      
+    </script>
+</body>
+
+</html>
