@@ -27,10 +27,10 @@
            const gameAreaSize = document.getElementById("select").value
             const json = createGameArray()
             
-            randomChapar(json, gameAreaSize)
+            randomFense(json, gameAreaSize)
             randomWolves(json, gameAreaSize)
-            randomTun(json, gameAreaSize)
-            randomNap(json, gameAreaSize)
+            randomHouse(json, gameAreaSize)
+            randomRabbit(json, gameAreaSize)
         
             console.log(json)
        }
@@ -86,7 +86,7 @@
             // return myArray
         }
 
-        function randomChapar(myArray, num){
+        function randomFense(myArray, num){
             let num1 = parseInt(num)
             if(num1 === 10){
                 num1 -= 6
@@ -113,7 +113,7 @@
             return myArray
         }
 
-        function randomTun(myArray, num){
+        function randomHouse(myArray, num){
             // const random = Math.floor(Math.random()*num)
 
                 let random1 = Math.floor(Math.random()*num)
@@ -122,13 +122,13 @@
                 if(myArray[random1][random] == 0){
                     myArray[random1][random] = 3
                 } else {
-                    randomChapar(myArray)
+                    randomFense(myArray)
                 }
                 
             return myArray
         }
 
-        function randomNap(myArray, num){
+        function randomRabbit(myArray, num){
             // const random = Math.floor(Math.random()*num)
 
                 let random1 = Math.floor(Math.random()*num)
@@ -137,7 +137,7 @@
                 if(myArray[random1][random] == 0){
                     myArray[random1][random] = 4
                 } else {
-                    randomChapar(myArray)
+                    randomFense(myArray)
                 }
                 
             return myArray
