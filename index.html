@@ -26,16 +26,13 @@
        function selectSize(){
            const gameAreaSize = document.getElementById("select").value
             const json = createGameArray()
-
-
-            console.log(json)
             
-
             randomChapar(json, gameAreaSize)
             randomWolfes(json, gameAreaSize)
             randomTun(json, gameAreaSize)
             randomNap(json, gameAreaSize)
         
+            console.log(json)
        }
        
        const gallery= new Array();
