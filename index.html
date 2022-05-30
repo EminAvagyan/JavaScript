@@ -88,7 +88,15 @@
 
         function randomChapar(myArray, num){
             let num1 = parseInt(num)
-            num1 === 10 ? num1 -= 6: num1 -= 3 
+            if(num1 === 10){
+                num1 -= 6
+            }  
+            if(num1 === 7){
+                num1 -= 4
+            } 
+            if(num1 === 5){
+                num1 -= 3
+            } 
             // const random = Math.floor(Math.random()*num)
 
             for(let i = 0; i < num1; i++){
