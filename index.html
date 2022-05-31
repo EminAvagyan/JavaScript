@@ -23,7 +23,7 @@
       const FENCE = 2;
       const HOUSE = 3;
       const RABBIT = 4;
-
+    
       const gallery = new Array();
 
       gallery[1] = "images/gamewolf.png";
@@ -46,53 +46,35 @@
       }
 
       function eventListenersForRabbit(array) {
-          
+
         window.onkeydown = (event) =>{
             
-            if(event.key === "ArrowDown"){
+            if(event.key === "ArrowUp"){
                 moveRabbit(array)
                 console.log(array);
                 
             }
-            if(event.key === "ArrowLeft"){
-                moveRabbitLeft(array)
+            if(event.key === "ArrowDown"){
+                moveRabbit(array)
                 console.log(array);
             }
         };
         
       }
 
-      function moveRabbitLeft(array) {
+      function moveRabbit(array) {
             const rabbitCords = findCharacterCords(array, RABBIT)
             const [x,y] = rabbitCords[0]
-            console.log(rabbitCords[0])
-            if(array[x][y-1] == EMPTY_CELL){
+            console.log(x,y)
+            if(array[x-1][y] == EMPTY_CELL){
                 
-                array[x][y-1] = RABBIT
+                array[x-1][y] = RABBIT
                 
                 array[x][y] = EMPTY_CELL
             }
       }
 
-      function moveRabbit(array, rabbitCords) {
-            
-             const rabbitCords = findCharacterCords(array, RABBIT)
 
-            const x = rabbitCords[0][0]
-            const y = rabbitCords[0][1]
-            console.log(x,y)
-            array[x][y] = EMPTY_CELL
-            array[x+1][y] = RABBIT
-            // if(newCord === EMPTY_CELL){
-                
-                // newCord = RABBIT
-                
-                // rabbitPlace = EMPTY_CELL
-                return array
-            // } else {
-            //     return array
-            // }
-      }
 
       function findCharacterCords(array, character) {
         const findInMatrix = function (accumulator, row, x) {
