@@ -11,9 +11,9 @@
         <div class="header">
             <button onclick="selectSize()">Select Size</button>
             <select id = "select">
-                <option value = "5">5X5</option>
-                <option value = "7">7X7</option>
-                <option value = "10">10X10</option>
+                <option value = "5" data-width = "330">5X5</option>
+                <option value = "7" data-width = "450">7X7</option>
+                <option value = "10" data-width = "630">10X10</option>
             </select>
         </div>
         <div class = "game_area" id = "game_area">
@@ -21,17 +21,23 @@
         </div>
     </div>
     <script>
-       
+        
+        const EMPTY_CELL = 0
+        const WOLF = 1
+        const FENCE = 2
+        const HOUSE = 3
+        const RABBIT = 4
        
        function selectSize(){
-           const gameAreaSize = document.getElementById("select").value
-            const json = createGameArray()
+            const gameAreaSize = document.getElementById("select").value
+            const el = document.getElementById("select")
+            console.log(el.dataset.width)
+            const json = createGameArray(gameAreaSize)
             
-            randomFense(json, gameAreaSize)
+            randomFence(json, gameAreaSize)
             randomWolves(json, gameAreaSize)
-            randomHouse(json, gameAreaSize)
-            randomRabbit(json, gameAreaSize)
-        
+            randomHouse(json)
+            randomRabbit(json)
             console.log(json)
        }
        
@@ -43,14 +49,12 @@
         gallery[4]="images/rabbit.png";
 
 
-        function createGameArray() {
+        function createGameArray(gameAreaSize) {
 
-            const value = parseInt(document.getElementById('select').value);
+            const value = parseInt(gameAreaSize);
 
-            const gameCondition = new Array(value).fill(0).map(() => new Array(value).fill(0));
+            const gameCondition = new Array(value).fill(EMPTY_CELL).map(() => new Array(value).fill(EMPTY_CELL));
             
-            
-            // console.log (gameCondition);
             return gameCondition
         }
         
@@ -59,87 +63,50 @@
         function createGameArea(array, gameAreaSize){
             array.map((item)=>{
             item.map((item)=>{
-                if(item == 0){
+                if(item === EMPTY_CELL){
                     createInnerDivs(gameAreaSize)
                 }
             })
         })
         }
-    
+        
 
-        function randomWolves(myArray, num){
-            let num1 = parseInt(num)
-            num1 === 10 ? num1 -= 4: num1 -= 2 
-            // const random = Math.floor(Math.random()*num)
+        function findEmptyCell(myArray, character){
 
-            for(let i = 0; i < num1; i++){
-                let random1 = Math.floor(Math.random()*num)
-                let random = Math.floor(Math.random()*num)
-                
-                if(myArray[random1][random] == 0){
-                    myArray[random1][random] = 1
-                } else {
-                    num1+=1
-                }
-                
+            const randomX = Math.floor(Math.random() * myArray.length)
+            const randomY = Math.floor(Math.random() * myArray.length)
+            if(myArray[randomX][randomY] === EMPTY_CELL){
+                myArray[randomX][randomY] = character
+            } else {
+                return findEmptyCell(myArray, character)
             }
-            // return myArray
         }
 
-        function randomFense(myArray, num){
-            let num1 = parseInt(num)
-            if(num1 === 10){
-                num1 -= 6
-            }  
-            if(num1 === 7){
-                num1 -= 4
-            } 
-            if(num1 === 5){
-                num1 -= 3
-            } 
-            // const random = Math.floor(Math.random()*num)
-
-            for(let i = 0; i < num1; i++){
-                let random1 = Math.floor(Math.random()*num)
-                let random = Math.floor(Math.random()*num)
-                
-                if(myArray[random1][random] == 0){
-                    myArray[random1][random] = 2
-                } else {
-                    num1+=1
-                }
-                
+        function randomWolves(myArray, gameAreaSize){
+            const wolvesCount = Math.floor((gameAreaSize*gameAreaSize)/100*15)
+            
+            for(let i = 0; i < wolvesCount; i++){
+                findEmptyCell(myArray, WOLF)
             }
             return myArray
         }
 
-        function randomHouse(myArray, num){
-            // const random = Math.floor(Math.random()*num)
-
-                let random1 = Math.floor(Math.random()*num)
-                let random = Math.floor(Math.random()*num)
-                
-                if(myArray[random1][random] == 0){
-                    myArray[random1][random] = 3
-                } else {
-                    randomFense(myArray)
-                }
-                
+        function randomFence(myArray, gameAreaSize){
+            const fenceCount = Math.floor((gameAreaSize*gameAreaSize)/100*10)
+            
+            for(let i = 0; i < fenceCount; i++){
+                findEmptyCell(myArray, FENCE)
+            }
             return myArray
         }
 
-        function randomRabbit(myArray, num){
-            // const random = Math.floor(Math.random()*num)
+        function randomHouse(myArray){
+            findEmptyCell(myArray, HOUSE)
+            return myArray
+        }
 
-                let random1 = Math.floor(Math.random()*num)
-                let random = Math.floor(Math.random()*num)
-                
-                if(myArray[random1][random] == 0){
-                    myArray[random1][random] = 4
-                } else {
-                    randomFense(myArray)
-                }
-                
+        function randomRabbit(myArray){
+            findEmptyCell(myArray, RABBIT)
             return myArray
         }
 
