@@ -23,7 +23,7 @@
       const FENCE = 2;
       const HOUSE = 3;
       const RABBIT = 4;
-    
+
       const gallery = new Array();
 
       gallery[1] = "images/gamewolf.png";
@@ -36,67 +36,134 @@
         const matrix = createGameArray(gameAreaSize);
         console.log(matrix);
 
-
-
         insertAllCharacters(matrix, gameAreaSize);
-        
 
         eventListenersForRabbit(matrix);
-        
       }
 
       function eventListenersForRabbit(array) {
-
-        window.onkeydown = (event) =>{
-            
-            if(event.key === "ArrowUp"){
-                moveRabbit(array)
-                console.log(array);
-                
-            }
-            if(event.key === "ArrowDown"){
-                moveRabbit(array)
-                console.log(array);
-            }
+        window.onkeydown = (event) => {
+          if (event.key === "ArrowUp") {
+            moveRabbitUp(array);
+            console.log(array);
+          }
+          if (event.key === "ArrowDown") {
+            moveRabbitDown(array);
+            console.log(array);
+          }
+          if (event.key === "ArrowLeft") {
+            moveRabbitLeft(array);
+            console.log(array);
+          }
+          if (event.key === "ArrowRight") {
+            moveRabbitRight(array);
+            console.log(array);
+          }
         };
-        
-      }
-
-      function moveRabbit(array) {
-            const rabbitCords = findCharacterCords(array, RABBIT)
-            const [x,y] = rabbitCords[0]
-            console.log(x,y)
-            if(array[x-1][y] == EMPTY_CELL){
-                
-                array[x-1][y] = RABBIT
-                
-                array[x][y] = EMPTY_CELL
-            }
       }
 
 
+
+      function moveRabbitUp(array) {
+        const rabbitCords = findCharacterCords(array, RABBIT);
+        const [x, y] = rabbitCords[0];
+        let newRabbitCordX = x - 1;
+        console.log(x, y);
+        if (x === 0) {
+          newRabbitCordX = 4;
+        }
+        if (array[newRabbitCordX][y] == EMPTY_CELL) {
+          array[newRabbitCordX][y] = RABBIT;
+          array[x][y] = EMPTY_CELL;
+        } else if (array[newRabbitCordX][y] == HOUSE) {
+          alert("you win");
+        } else if (array[newRabbitCordX][y] == FENCE) {
+          return;
+        } else if (array[newRabbitCordX][y] == WOLF) {
+          alert("game over");
+        }
+      }
+      function moveRabbitDown(array) {
+        const rabbitCords = findCharacterCords(array, RABBIT);
+        const [x, y] = rabbitCords[0];
+        let newRabbitCordX = x + 1;
+        console.log(x, y);
+        if (x === 4) {
+          newRabbitCordX = 0;
+        }
+        if (array[newRabbitCordX][y] == EMPTY_CELL) {
+          array[newRabbitCordX][y] = RABBIT;
+          array[x][y] = EMPTY_CELL;
+        } else if (array[newRabbitCordX][y] == HOUSE) {
+          alert("you win");
+        } else if (array[newRabbitCordX][y] == FENCE) {
+          return;
+        } else if (array[newRabbitCordX][y] == WOLF) {
+          alert("game over");
+        }
+      }
+
+      function moveRabbitLeft(array) {
+        const rabbitCords = findCharacterCords(array, RABBIT);
+        const [x, y] = rabbitCords[0];
+        let newRabbitCordY = y - 1;
+        console.log(x, y);
+        if (y === 0) {
+          newRabbitCordY = 4;
+        }
+        if (array[x][newRabbitCordY] == EMPTY_CELL) {
+          array[x][newRabbitCordY] = RABBIT;
+          array[x][y] = EMPTY_CELL;
+        } else if (array[x][newRabbitCordY] == HOUSE) {
+          alert("you win");
+        } else if (array[x][newRabbitCordY] == FENCE) {
+          return;
+        } else if (array[x][newRabbitCordY] == WOLF) {
+          alert("game over");
+        }
+      }
+
+      function moveRabbitRight(array) {
+        const rabbitCords = findCharacterCords(array, RABBIT);
+        const [x, y] = rabbitCords[0];
+        let newRabbitCordY = y + 1;
+        console.log(x, y);
+        if (y === 4) {
+          newRabbitCordY = 0;
+        }
+        if (array[x][newRabbitCordY] == EMPTY_CELL) {
+          array[x][newRabbitCordY] = RABBIT;
+          array[x][y] = EMPTY_CELL;
+        } else if (array[x][newRabbitCordY] == HOUSE) {
+          alert("you win");
+        } else if (array[x][newRabbitCordY] == FENCE) {
+          return;
+        } else if (array[x][newRabbitCordY] == WOLF) {
+          alert("game over");
+        }
+      }
 
       function findCharacterCords(array, character) {
         const findInMatrix = function (accumulator, row, x) {
           row.forEach((element, y) => {
             if (element === character) {
-              accumulator.push([x, y])
+              accumulator.push([x, y]);
             }
-          })
+          });
 
-          return accumulator
+          return accumulator;
         };
 
         return array.reduce(findInMatrix, []);
       }
 
       function insertAllCharacters(array, gameAreaSize) {
-        const wolvesCount = (gameAreaSize / 100) * 60
-        const fenceCount = (gameAreaSize / 100) * 40
-        insertCharactersIntoArray(array, WOLF, wolvesCount)
-        insertCharactersIntoArray(array, FENCE, fenceCount)
-        insertCharactersIntoArray(array, HOUSE, 1)
-        insertCharactersIntoArray(array, RABBIT, 1)
+        const wolvesCount = (gameAreaSize / 100) * 60;
+        const fenceCount = (gameAreaSize / 100) * 40;
+        insertCharactersIntoArray(array, WOLF, wolvesCount);
+        insertCharactersIntoArray(array, FENCE, fenceCount);
+        insertCharactersIntoArray(array, HOUSE, 1);
+        insertCharactersIntoArray(array, RABBIT, 1);
       }
 
       function createGameArray(gameAreaSize) {
