@@ -34,25 +34,64 @@
       function gameStart() {
         const gameAreaSize = document.getElementById("select").value;
         const matrix = createGameArray(gameAreaSize);
+        console.log(matrix);
+
+
+
         insertAllCharacters(matrix, gameAreaSize);
+        
 
         eventListenersForRabbit(matrix);
-
-        console.log(matrix);
+        
       }
 
       function eventListenersForRabbit(array) {
-        document.addEventListener("keydown", function (event) {
+          
+        window.onkeydown = (event) =>{
+            
             if(event.key === "ArrowDown"){
-                const rabbitCords = findCharacterCords(array, RABBIT)
-                console.log(rabbitCords);
+                moveRabbit(array)
+                console.log(array);
+                
             }
-          //   moveRabbit(array)
-        });
+            if(event.key === "ArrowLeft"){
+                moveRabbitLeft(array)
+                console.log(array);
+            }
+        };
+        
       }
 
-      function moveRabbit(array) {
+      function moveRabbitLeft(array) {
+            const rabbitCords = findCharacterCords(array, RABBIT)
+            const [x,y] = rabbitCords[0]
+            console.log(rabbitCords[0])
+            if(array[x][y-1] == EMPTY_CELL){
+                
+                array[x][y-1] = RABBIT
+                
+                array[x][y] = EMPTY_CELL
+            }
+      }
 
+      function moveRabbit(array, rabbitCords) {
+            
+             const rabbitCords = findCharacterCords(array, RABBIT)
+
+            const x = rabbitCords[0][0]
+            const y = rabbitCords[0][1]
+            console.log(x,y)
+            array[x][y] = EMPTY_CELL
+            array[x+1][y] = RABBIT
+            // if(newCord === EMPTY_CELL){
+                
+                // newCord = RABBIT
+                
+                // rabbitPlace = EMPTY_CELL
+                return array
+            // } else {
+            //     return array
+            // }
       }
 
       function findCharacterCords(array, character) {
