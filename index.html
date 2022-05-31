@@ -1,116 +1,117 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>This is the title of the webpage!</title>
     <link rel="stylesheet" href="style.css" />
-</head>
+  </head>
 
-<body>
-    <div class = "container">
-        <div class="header">
-            <button onclick="selectSize()">Select Size</button>
-            <select id = "select">
-                <option value = "5">5X5</option>
-                <option value = "7">7X7</option>
-                <option value = "10">10X10</option>
-            </select>
-        </div>
-        <div class = "game_area" id = "game_area">
-
-        </div>
+  <body>
+    <div class="container">
+      <div class="header">
+        <button onclick="gameStart()">Select Size</button>
+        <select id="select">
+          <option value="5">5X5</option>
+          <option value="7">7X7</option>
+          <option value="10">10X10</option>
+        </select>
+      </div>
+      <div class="game_area" id="game_area"></div>
     </div>
     <script>
-        
-        const EMPTY_CELL = 0
-        const WOLF = 1
-        const FENCE = 2
-        const HOUSE = 3
-        const RABBIT = 4
-       
-       const gallery= new Array();
+      const EMPTY_CELL = 0;
+      const WOLF = 1;
+      const FENCE = 2;
+      const HOUSE = 3;
+      const RABBIT = 4;
 
-        gallery[1]="images/gamewolf.png";
-        gallery[2]="images/ban.png";
-        gallery[3]="images/home.png";
-        gallery[4]="images/rabbit.png";
+      const gallery = new Array();
 
-        function selectSize(){
-            const gameAreaSize = document.getElementById("select").value
-            const json = createGameArray(gameAreaSize)
-            randomCharacters(json, gameAreaSize)
-            
-            eventListenersForRabbit(json)
-            
-            console.log(json)
-       }
+      gallery[1] = "images/gamewolf.png";
+      gallery[2] = "images/ban.png";
+      gallery[3] = "images/home.png";
+      gallery[4] = "images/rabbit.png";
 
-       function eventListenersForRabbit(array){
-           document.addEventListener('keydown', moveRabbit(event))
-       }
+      function gameStart() {
+        const gameAreaSize = document.getElementById("select").value;
+        const matrix = createGameArray(gameAreaSize);
+        insertAllCharacters(matrix, gameAreaSize);
 
-       function moveRabbit(event){
-            console.log(event.key)
-            if(event.key === 'ArrowDown'){
-                
+        eventListenersForRabbit(matrix);
+
+        console.log(matrix);
+      }
+
+      function eventListenersForRabbit(array) {
+        document.addEventListener("keydown", function (event) {
+            if(event.key === "ArrowDown"){
+                const rabbitCords = findCharacterCords(array, RABBIT)
+                console.log(rabbitCords);
             }
-       }
+          //   moveRabbit(array)
+        });
+      }
 
-        function randomCharacters(json, gameAreaSize){
-            const wolvesCount = gameAreaSize/100*60
-            const fenceCount = gameAreaSize/100*40
-            appendCharacters(json, WOLF, wolvesCount)
-            appendCharacters(json, FENCE, fenceCount)
-            appendCharacters(json, HOUSE, 1)
-            appendCharacters(json, RABBIT, 1)
-        }
+      function moveRabbit(array) {
 
-        function createGameArray(gameAreaSize) {
+      }
 
-            const value = parseInt(gameAreaSize);
-
-            const gameCondition = new Array(value).fill(EMPTY_CELL).map(() => new Array(value).fill(EMPTY_CELL));
-            
-            return gameCondition
-        }
-        
-        function appendEmptycell(cord, myArray, character){
-            const x = cord[0]
-            const y = cord[1]
-            myArray[x][y] = character
-        }
-
-        function findEmptyCell(myArray){
-
-            const randomX = Math.floor(Math.random() * myArray.length)
-            const randomY = Math.floor(Math.random() * myArray.length)
-            if(myArray[randomX][randomY] === EMPTY_CELL){
-                return [randomX,randomY]
-            } else {
-                return findEmptyCell(myArray)
+      function findCharacterCords(array, character) {
+        const findInMatrix = function (accumulator, row, x) {
+          row.forEach((element, y) => {
+            if (element === character) {
+              accumulator.push([x, y])
             }
-        }
-        
-        function appendCharacters(myArray, character, count){
-                for(let i = 0; i < count; i++){
-                    let cords = findEmptyCell(myArray)
-                    appendEmptycell(cords, myArray, character)
-                }
-                return myArray
-        }
+          })
 
-        function findRabbitCord(array){
-            array.map((item, row)=>{
-                    item.map((item, column)=>{
-                        if(item == 4){
-                            console.log(row, column)
-                        }
-                        
-                    })
-                })
+          return accumulator
+        };
+
+        return array.reduce(findInMatrix, []);
+      }
+
+      function insertAllCharacters(array, gameAreaSize) {
+        const wolvesCount = (gameAreaSize / 100) * 60
+        const fenceCount = (gameAreaSize / 100) * 40
+        insertCharactersIntoArray(array, WOLF, wolvesCount)
+        insertCharactersIntoArray(array, FENCE, fenceCount)
+        insertCharactersIntoArray(array, HOUSE, 1)
+        insertCharactersIntoArray(array, RABBIT, 1)
+      }
+
+      function createGameArray(gameAreaSize) {
+        const value = parseInt(gameAreaSize);
+
+        const gameCondition = new Array(value)
+          .fill(EMPTY_CELL)
+          .map(() => new Array(value).fill(EMPTY_CELL));
+
+        return gameCondition;
+      }
+
+      function insertSingleCharacter(cord, myArray, character) {
+        const x = cord[0];
+        const y = cord[1];
+        // myArray[0,1] = cord
+        myArray[x][y] = character;
+      }
+
+      function findEmptyCell(myArray) {
+        const randomX = Math.floor(Math.random() * myArray.length);
+        const randomY = Math.floor(Math.random() * myArray.length);
+        if (myArray[randomX][randomY] === EMPTY_CELL) {
+          return [randomX, randomY];
+        } else {
+          return findEmptyCell(myArray);
         }
-       
+      }
+
+      function insertCharactersIntoArray(myArray, character, count) {
+        for (let i = 0; i < count; i++) {
+          const cords = findEmptyCell(myArray);
+          insertSingleCharacter(cords, myArray, character);
+        }
+        return myArray;
+      }
     </script>
-</body>
-
+  </body>
 </html>
