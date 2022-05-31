@@ -11,9 +11,9 @@
         <div class="header">
             <button onclick="selectSize()">Select Size</button>
             <select id = "select">
-                <option value = "5" data-width = "330">5X5</option>
-                <option value = "7" data-width = "450">7X7</option>
-                <option value = "10" data-width = "630">10X10</option>
+                <option value = "5">5X5</option>
+                <option value = "7">7X7</option>
+                <option value = "10">10X10</option>
             </select>
         </div>
         <div class = "game_area" id = "game_area">
@@ -28,18 +28,7 @@
         const HOUSE = 3
         const RABBIT = 4
        
-       function selectSize(){
-            const gameAreaSize = document.getElementById("select").value
-            const el = document.getElementById("select")
-            console.log(el.dataset.width)
-            const json = createGameArray(gameAreaSize)
-            
-            randomFence(json, gameAreaSize)
-            randomWolves(json, gameAreaSize)
-            randomHouse(json)
-            randomRabbit(json)
-            console.log(json)
-       }
+       
        
        const gallery= new Array();
 
@@ -48,6 +37,22 @@
         gallery[3]="images/home.png";
         gallery[4]="images/rabbit.png";
 
+        function selectSize(){
+            const gameAreaSize = document.getElementById("select").value
+            const json = createGameArray(gameAreaSize)
+            randomCharacters(json, gameAreaSize)
+
+            console.log(json)
+       }
+
+        function randomCharacters(json, gameAreaSize){
+            const wolvesCount = gameAreaSize/100*60
+            const fenceCount = gameAreaSize/100*40
+            appendCharacters(json, WOLF, wolvesCount)
+            appendCharacters(json, FENCE, fenceCount)
+            appendCharacters(json, HOUSE, 1)
+            appendCharacters(json, RABBIT, 1)
+        }
 
         function createGameArray(gameAreaSize) {
 
@@ -58,85 +63,34 @@
             return gameCondition
         }
         
-        
-
-        function createGameArea(array, gameAreaSize){
-            array.map((item)=>{
-            item.map((item)=>{
-                if(item === EMPTY_CELL){
-                    createInnerDivs(gameAreaSize)
-                }
-            })
-        })
+        function appendEmptycell(cord, myArray, character){
+            const x = cord[0]
+            const y = cord[1]
+            myArray[x][y] = character
         }
-        
 
-        function findEmptyCell(myArray, character){
+        function findEmptyCell(myArray){
 
             const randomX = Math.floor(Math.random() * myArray.length)
             const randomY = Math.floor(Math.random() * myArray.length)
             if(myArray[randomX][randomY] === EMPTY_CELL){
-                myArray[randomX][randomY] = character
+                return [randomX,randomY]
             } else {
-                return findEmptyCell(myArray, character)
+                return findEmptyCell(myArray)
             }
         }
-
-        function randomWolves(myArray, gameAreaSize){
-            const wolvesCount = Math.floor((gameAreaSize*gameAreaSize)/100*15)
-            
-            for(let i = 0; i < wolvesCount; i++){
-                findEmptyCell(myArray, WOLF)
-            }
-            return myArray
+        
+        function appendCharacters(myArray, character, count){
+                for(let i = 0; i < count; i++){
+                    let cords = findEmptyCell(myArray)
+                    appendEmptycell(cords, myArray, character)
+                }
+                return myArray
         }
 
-        function randomFence(myArray, gameAreaSize){
-            const fenceCount = Math.floor((gameAreaSize*gameAreaSize)/100*10)
-            
-            for(let i = 0; i < fenceCount; i++){
-                findEmptyCell(myArray, FENCE)
-            }
-            return myArray
-        }
+        
 
-        function randomHouse(myArray){
-            findEmptyCell(myArray, HOUSE)
-            return myArray
-        }
-
-        function randomRabbit(myArray){
-            findEmptyCell(myArray, RABBIT)
-            return myArray
-        }
-
-        function clearGameArea(){
-            const containerNode = document.getElementById("game_area")
-            containerNode.innerHTML = ''
-        }
-
-        function createInnerDivs(optionValue){
-            
-            
-            const containerNode = document.getElementById("game_area")
-
-            if(optionValue == 5){
-                containerNode.style.width = "330px"
-            }
-
-            if(optionValue == 7){
-                containerNode.style.width = "450px"
-            }
-
-            if(optionValue == 10){
-                containerNode.style.width = "630px"
-            }
-
-            // containerNode.innerHTML = ''
-            const div = document.createElement("div")
-            containerNode.append(div)
-                    
-        }
+       
     </script>
 </body>
 
