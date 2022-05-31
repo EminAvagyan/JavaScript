@@ -28,8 +28,6 @@
         const HOUSE = 3
         const RABBIT = 4
        
-       
-       
        const gallery= new Array();
 
         gallery[1]="images/gamewolf.png";
@@ -41,8 +39,21 @@
             const gameAreaSize = document.getElementById("select").value
             const json = createGameArray(gameAreaSize)
             randomCharacters(json, gameAreaSize)
-
+            
+            eventListenersForRabbit(json)
+            
             console.log(json)
+       }
+
+       function eventListenersForRabbit(array){
+           document.addEventListener('keydown', moveRabbit(event))
+       }
+
+       function moveRabbit(event){
+            console.log(event.key)
+            if(event.key === 'ArrowDown'){
+                
+            }
        }
 
         function randomCharacters(json, gameAreaSize){
@@ -88,8 +99,16 @@
                 return myArray
         }
 
-        
-
+        function findRabbitCord(array){
+            array.map((item, row)=>{
+                    item.map((item, column)=>{
+                        if(item == 4){
+                            console.log(row, column)
+                        }
+                        
+                    })
+                })
+        }
        
     </script>
 </body>
