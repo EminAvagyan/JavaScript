@@ -43,6 +43,7 @@
 
       function eventListenersForRabbit(array) {
         window.onkeydown = (event) => {
+          calculateDistance(array)
           if (event.key === "ArrowUp") {
             moveRabbitUp(array);
             console.log(array);
@@ -62,7 +63,36 @@
         };
       }
 
+      function findEmptyCellsArroundWolves(array, wolvesCords){
 
+          
+
+          const findEmpty = function(accum, cords){
+            const [x,y] = cords
+            // console.log([x,y])
+            if(array[x+1][y] == EMPTY_CELL){
+              // console.log([x+1,y])
+              accum.push([x+1, y])
+            }
+            if(array[x-1][y] == EMPTY_CELL){
+              accum.push([x-1, y])
+            }
+            if(array[x][y-1] == EMPTY_CELL){
+              accum.push([x, y-1])
+            }
+            if(array[x][y+1] == EMPTY_CELL){
+              accum.push([x, y+1])
+            }
+            
+            return accum
+          }
+          return wolvesCords.reduce(findEmpty, [])
+      }
+
+      function calculateDistance(array){
+        const wolvesCords = findCharacterCords(array, WOLF);
+        console.log(findEmptyCellsArroundWolves(array, wolvesCords))
+      }
 
       function moveRabbitUp(array) {
         const rabbitCords = findCharacterCords(array, RABBIT);
@@ -167,7 +197,7 @@
       }
 
       function createGameArray(gameAreaSize) {
-        
+
 
         const gameCondition = new Array(gameAreaSize)
           .fill(EMPTY_CELL)
