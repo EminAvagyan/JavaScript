@@ -32,7 +32,7 @@
       gallery[4] = "images/rabbit.png";
 
       function gameStart() {
-        const gameAreaSize = document.getElementById("select").value;
+        const gameAreaSize = parseInt(document.getElementById("select").value)
         const matrix = createGameArray(gameAreaSize);
         console.log(matrix);
 
@@ -75,11 +75,11 @@
         if (array[newRabbitCordX][y] == EMPTY_CELL) {
           array[newRabbitCordX][y] = RABBIT;
           array[x][y] = EMPTY_CELL;
-        } else if (array[newRabbitCordX][y] == HOUSE) {
+        } else if (array[newRabbitCordX][y] === HOUSE) {
           alert("you win");
-        } else if (array[newRabbitCordX][y] == FENCE) {
+        } else if (array[newRabbitCordX][y] === FENCE) {
           return;
-        } else if (array[newRabbitCordX][y] == WOLF) {
+        } else if (array[newRabbitCordX][y] === WOLF) {
           alert("game over");
         }
       }
@@ -91,14 +91,14 @@
         if (x === 4) {
           newRabbitCordX = 0;
         }
-        if (array[newRabbitCordX][y] == EMPTY_CELL) {
+        if (array[newRabbitCordX][y] === EMPTY_CELL) {
           array[newRabbitCordX][y] = RABBIT;
           array[x][y] = EMPTY_CELL;
-        } else if (array[newRabbitCordX][y] == HOUSE) {
+        } else if (array[newRabbitCordX][y] === HOUSE) {
           alert("you win");
-        } else if (array[newRabbitCordX][y] == FENCE) {
+        } else if (array[newRabbitCordX][y] === FENCE) {
           return;
-        } else if (array[newRabbitCordX][y] == WOLF) {
+        } else if (array[newRabbitCordX][y] === WOLF) {
           alert("game over");
         }
       }
@@ -114,11 +114,11 @@
         if (array[x][newRabbitCordY] == EMPTY_CELL) {
           array[x][newRabbitCordY] = RABBIT;
           array[x][y] = EMPTY_CELL;
-        } else if (array[x][newRabbitCordY] == HOUSE) {
+        } else if (array[x][newRabbitCordY] === HOUSE) {
           alert("you win");
-        } else if (array[x][newRabbitCordY] == FENCE) {
+        } else if (array[x][newRabbitCordY] === FENCE) {
           return;
-        } else if (array[x][newRabbitCordY] == WOLF) {
+        } else if (array[x][newRabbitCordY] === WOLF) {
           alert("game over");
         }
       }
@@ -134,11 +134,11 @@
         if (array[x][newRabbitCordY] == EMPTY_CELL) {
           array[x][newRabbitCordY] = RABBIT;
           array[x][y] = EMPTY_CELL;
-        } else if (array[x][newRabbitCordY] == HOUSE) {
+        } else if (array[x][newRabbitCordY] === HOUSE) {
           alert("you win");
-        } else if (array[x][newRabbitCordY] == FENCE) {
+        } else if (array[x][newRabbitCordY] === FENCE) {
           return;
-        } else if (array[x][newRabbitCordY] == WOLF) {
+        } else if (array[x][newRabbitCordY] === WOLF) {
           alert("game over");
         }
       }
@@ -167,11 +167,11 @@
       }
 
       function createGameArray(gameAreaSize) {
-        const value = parseInt(gameAreaSize);
+        
 
-        const gameCondition = new Array(value)
+        const gameCondition = new Array(gameAreaSize)
           .fill(EMPTY_CELL)
-          .map(() => new Array(value).fill(EMPTY_CELL));
+          .map(() => new Array(gameAreaSize).fill(EMPTY_CELL));
 
         return gameCondition;
       }
