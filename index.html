@@ -44,25 +44,30 @@
       function eventListenersForRabbit(array) {
         window.onkeydown = (event) => {
           if (event.key === "ArrowUp") {
-            changeWolvesPositions(array);
+            
             moveRabbitUp(array);
+            changeWolvesPositions(array);
 
-            // console.log(array);
+            console.log(array);
           }
           if (event.key === "ArrowDown") {
-            changeWolvesPositions(array);
+            
             moveRabbitDown(array);
-            // console.log(array);
+            changeWolvesPositions(array);
+            
+            console.log(array);
           }
           if (event.key === "ArrowLeft") {
-            changeWolvesPositions(array);
+            
             moveRabbitLeft(array);
-            // console.log(array);
+            changeWolvesPositions(array);
+            console.log(array);
           }
           if (event.key === "ArrowRight") {
-            changeWolvesPositions(array);
+            
             moveRabbitRight(array);
-            // console.log(array);
+            changeWolvesPositions(array);
+            console.log(array);
           }
         };
       }
@@ -72,8 +77,7 @@
         const wolvesCords = findCharacterCords(array, WOLF);
         wolvesCords.forEach((item) => {
           const freeCells = findEmptyCellsArroundWolf(array, item);
-          console.log(freeCells)
-          calculateDistanceFromRabbitandPlace(freeCells, rabbitCords);
+          calculateDistanceFromRabbitandPlace(array, freeCells, rabbitCords, item);
         });
       }
 
@@ -98,15 +102,34 @@
       function conditionForAll(array, wolvesCords) {
         const [x, y] = wolvesCords;
         const cordsArray = [];
+        if(array[x - 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x - 1][y] === EMPTY_CELL) {
           cordsArray.push([x - 1, y]);
         }
+
+        if(array[x + 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x + 1][y] === EMPTY_CELL) {
           cordsArray.push([x + 1, y]);
         }
+
+        if(array[x][y - 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y - 1] === EMPTY_CELL) {
           cordsArray.push([x, y - 1]);
         }
+
+        if(array[x][y + 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y + 1] === EMPTY_CELL) {
           cordsArray.push([x, y + 1]);
         }
@@ -117,12 +140,27 @@
       function conditionForXMax(array, wolvesCords) {
         const [x, y] = wolvesCords;
         const cordsArray = [];
+
+        if( array[x - 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x - 1][y] === EMPTY_CELL) {
           cordsArray.push([x - 1, y]);
         }
+
+        if( array[x][y - 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y - 1] === EMPTY_CELL) {
           cordsArray.push([x, y - 1]);
         }
+
+        if( array[x][y + 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y + 1] === EMPTY_CELL) {
           cordsArray.push([x, y + 1]);
         }
@@ -133,12 +171,27 @@
       function conditionForXMin(array, wolvesCords) {
         const [x, y] = wolvesCords;
         const cordsArray = [];
+
+        if( array[x + 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x + 1][y] === EMPTY_CELL) {
           cordsArray.push([x + 1, y]);
         }
+
+        if( array[x][y - 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y - 1] === EMPTY_CELL) {
           cordsArray.push([x, y - 1]);
         }
+
+        if( array[x][y + 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y + 1] === EMPTY_CELL) {
           cordsArray.push([x, y + 1]);
         }
@@ -149,12 +202,30 @@
       function conditionForYMin(array, wolvesCords) {
         const [x, y] = wolvesCords;
         const cordsArray = [];
+
+
+        if( array[x - 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x - 1][y] === EMPTY_CELL) {
           cordsArray.push([x - 1, y]);
         }
+
+
+        if( array[x + 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x + 1][y] === EMPTY_CELL) {
           cordsArray.push([x + 1, y]);
         }
+
+
+        if( array[x][y + 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y + 1] === EMPTY_CELL) {
           cordsArray.push([x, y + 1]);
         }
@@ -165,12 +236,30 @@
       function conditionForYMax(array, wolvesCords) {
         const [x, y] = wolvesCords;
         const cordsArray = [];
+
+
+        if( array[x - 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x - 1][y] === EMPTY_CELL) {
           cordsArray.push([x - 1, y]);
         }
+
+
+        if( array[x + 1][y] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x + 1][y] === EMPTY_CELL) {
           cordsArray.push([x + 1, y]);
         }
+
+
+        if( array[x][y - 1] === RABBIT && array[x - 1][y] != HOUSE){
+          alert("Game over")
+          return
+        } else
         if (array[x][y - 1] === EMPTY_CELL) {
           cordsArray.push([x, y - 1]);
         }
@@ -178,12 +267,34 @@
         return cordsArray;
       }
 
-      function calculateDistanceFromRabbitandPlace(freeVellsArray, rabbitCords) {
+      function calculateDistanceFromRabbitandPlace(array, freeVellsArray, rabbitCords, item) {
+
+        const distanceArray = []
         freeVellsArray.forEach((item) => {
-          
           const distance = calculateDistanceFromRabbit(item, rabbitCords);
-          
+          distanceArray.push(distance)
         });
+        // console.log(distanceArray)
+        const max = Math.min(...distanceArray);
+        const index = distanceArray.indexOf(max);
+        // console.log(freeVellsArray[index])
+        // console.log(freeVellsArray)
+        placeWolvesIntoNewCells(array, freeVellsArray[index], item)
+      }
+
+      const equals = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+      function placeWolvesIntoNewCells(array, wolvesCords, item){
+          const rabbitCords = findCharacterCords(array, RABBIT);
+          const [x, y] = wolvesCords
+          const[k, p] = item
+          if(equals([x, y], rabbitCords)){
+              alert("Game over")
+          } else {
+            array[x][y] = WOLF
+            array[k][p] = EMPTY_CELL
+          }
+            
       }
 
       function calculateDistanceFromRabbit(arrayItem, rabbitCords) {
@@ -191,7 +302,7 @@
         let [x, y] = arrayItem;
         let [z, k] = rabbitCords[0];
 
-        return Math.floor(Math.sqrt(Math.pow(x - z, 2) + Math.pow(y - k, 2)));
+        return Math.round(Math.sqrt(Math.pow(x - z, 2) + Math.pow(y - k, 2)));
       }
 
       function moveRabbitUp(array) {
