@@ -198,6 +198,7 @@ function checkDir(newCords, napCords, array) {
     array[j][k] = RABBIT;
     array[x][y] = EMPTY_CELL;
   } else if (array[j][k] === HOUSE) {
+    array[x][y] = EMPTY_CELL;
     showGameMessages("win")
   } else if (array[j][k] === FENCE) {
     return;
