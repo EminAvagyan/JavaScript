@@ -323,10 +323,15 @@ function createGameArea(array, gameAreaSize) {
 function hideGameMessages(){
   const mainDiv = document.getElementById("message_div")
   mainDiv.style.display = "none"
+  const gameBoard = document.getElementById("wrapper")
+  gameBoard.style.display = "block"
 }
 function showGameMessages(gameStatus){
+  
   const mainDiv = document.getElementById("message_div")
   const message = document.querySelector("#message_div>h2")
+  const gameBoard = document.getElementById("wrapper")
+  gameBoard.style.display = "none"
   if(gameStatus === "over"){
     message.innerText = "Game over"
   } else if(gameStatus === "win"){
