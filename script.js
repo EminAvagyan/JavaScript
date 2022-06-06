@@ -158,7 +158,7 @@ function calculateDistanceFromRabbit([x1, y1], [[x2, y2]]) {
 function moveRabbitUp(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[X][X] === 0) {
+  if (rabbitCords[0][X] === 0) {
     directions.up[X] = array.length - 1;
   }
   checkDir(directions.up, rabbitCords, array);
@@ -167,7 +167,7 @@ function moveRabbitUp(array) {
 function moveRabbitDown(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[X][X] === array.length - 1) {
+  if (rabbitCords[0][X] === array.length - 1) {
     directions.down[X] = 0;
   }
   checkDir(directions.down, rabbitCords, array);
@@ -176,7 +176,7 @@ function moveRabbitDown(array) {
 function moveRabbitLeft(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[X][Y] === 0) {
+  if (rabbitCords[0][Y] === 0) {
     directions.left[Y] = array.length - 1;
   }
   checkDir(directions.left, rabbitCords, array);
@@ -184,7 +184,7 @@ function moveRabbitLeft(array) {
 function moveRabbitRight(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[X][Y] === array.length - 1) {
+  if (rabbitCords[0][Y] === array.length - 1) {
     directions.right[Y] = 0;
   }
   checkDir(directions.right, rabbitCords, array);
