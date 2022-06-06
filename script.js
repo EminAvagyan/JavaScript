@@ -3,6 +3,8 @@ const WOLF = 1;
 const FENCE = 2;
 const HOUSE = 3;
 const RABBIT = 4;
+const X = 0
+const Y = 1 
 
 const gallery = new Array();
 
@@ -14,7 +16,7 @@ gallery[4] = "images/rabbit.png";
 function gameStart() {
   const gameAreaSize = parseInt(document.getElementById("select").value);
   const matrix = createGameArray(gameAreaSize);
-  
+  console.log(matrix)
   setGameAreWidth(gameAreaSize);
 
   insertAllCharacters(matrix, gameAreaSize);
@@ -22,6 +24,7 @@ function gameStart() {
   clearGameArea()
   
   createGameArea(matrix, gameAreaSize);
+  
   eventListenersForRabbit(matrix, gameAreaSize);
 }
 
@@ -32,135 +35,131 @@ function setGameAreWidth(gameAreaSize) {
 }
 function eventListenersForRabbit(array, gameAreaSize) {
   window.onkeydown = (event) => {
-    if (event.key === "ArrowUp") {
-      moveRabbitUp(array);
-    }
-    if (event.key === "ArrowDown") {
-      moveRabbitDown(array);
-    }
-    if (event.key === "ArrowLeft") {
-      moveRabbitLeft(array);
-    }
-    if (event.key === "ArrowRight") {
-      moveRabbitRight(array);
-    }
+    const eventKey = event.key
+    eventKeysFunctions(eventKey, array)
+  
     changeWolvesPositions(array);
     clearGameArea();
     createGameArea(array, gameAreaSize);
   };
 }
 
+function eventKeysFunctions(event, array) {
+  var eventDirection = {
+    "ArrowUp": function(){
+      moveRabbitUp(array)
+    },
+    "ArrowDown": function(){
+      moveRabbitDown(array)
+    },
+    "ArrowLeft": function(){
+      moveRabbitLeft(array)
+    },
+    "ArrowRight": function(){
+      moveRabbitRight(array)
+    },
+  };
+  console.log(array)
+  return eventDirection[event]();
+}
+
 function changeWolvesPositions(array) {
-  const rabbitCords = findCharacterCords(array, RABBIT);
   const wolvesCords = findCharacterCords(array, WOLF);
+
   wolvesCords.forEach((singleWolf) => {
-    const freeCells = findEmptyCellsArroundWolf(array, singleWolf);
-    if (freeCells != undefined) {
-      calculateDistanceFromRabbitandPlace(array,freeCells,rabbitCords,singleWolf);
-    }
+    changeSingleWolfPosition(array, singleWolf)
   });
 }
 
-function findEmptyCellsArroundWolf(array, wolvesCords) {
-  const [x, y] = wolvesCords;
-  let movementDirections = [];
+function changeSingleWolfPosition(array, singleWolf){
+  const rabbitCords = findCharacterCords(array, RABBIT);
+  
+  const cellsArround = findEmptyCellsArroundWolf(array, singleWolf);
+    
+    const freeCells = checkCells(cellsArround, array)
 
-  if (x === array.length - 1) {
-    movementDirections = [
-      [x - 1, y],
-      [x, y - 1],
-      [x, y + 1],
-    ];
-    return gil(wolvesCords, array, movementDirections);
-  }
-  if (x === 0) {
-    movementDirections = [
-      [x + 1, y],
-      [x, y - 1],
-      [x, y + 1],
-    ];
-    return gil(wolvesCords, array, movementDirections);
-  }
-  if (y === 0) {
-    movementDirections = [
-      [x - 1, y],
-      [x + 1, y],
-      [x, y + 1],
-    ];
-    return gil(wolvesCords, array, movementDirections);
-  }
-  if (y === array.length - 1) {
-    movementDirections = [
-      [x - 1, y],
-      [x + 1, y],
-      [x, y - 1],
-    ];
-    return gil(wolvesCords, array, movementDirections);
-  } else {
-    movementDirections = [
-      [x - 1, y],
-      [x + 1, y],
-      [x, y - 1],
-      [x, y + 1],
-    ];
-    return gil(wolvesCords, array, movementDirections);
-  }
-}
-
-function gil(wolvesCords, array, movementDirections) {
-  const findInMatrix = function (accumulator, wolf) {
-    const [z, k] = wolf;
-    if (array[z][k] === RABBIT && array[z][k] != HOUSE) {
-      showGameMessages("over")
-    } else if (array[z][k] === EMPTY_CELL) {
-      accumulator.push([z, k]);
+    if (freeCells != undefined) {
+      const distanceArray = calculateDistanceOfCells( freeCells, rabbitCords);
+      const closestCell = getClosestCell(distanceArray, freeCells)
+      getClosestCell(distanceArray, freeCells)
+      placeWolvesIntoNewCells(array, closestCell, singleWolf)
     }
-    return accumulator;
-  };
-
-  return movementDirections.reduce(findInMatrix, []);
 }
 
-function calculateDistanceFromRabbitandPlace(array,freeVellsArray,rabbitCords,item
-) {
+function checkCells(cellsArround, array){
+  const newArray = []
+  cellsArround.forEach((cell) => {
+    const [x,y] = cell 
+    if( array[x][y] === RABBIT){
+    showGameMessages("over")
+  } if(array[x][y] === EMPTY_CELL){
+    newArray.push(cell)
+    // console.log(cell)
+  }})
+  return newArray
+}
+
+
+function checkEmptyCells([x, y], array){
+    return x >= 0 && x < array.length && y >= 0 && y < array.length
+}
+
+function findEmptyCellsArroundWolf(array, [x, y]) {
+  let movementDirections = [
+    [x, y],
+    [x - 1, y],
+    [x + 1, y],
+    [x, y - 1],
+    [x, y + 1],
+  ];
+  const emptyCells = movementDirections.filter((cell) => checkEmptyCells(cell, array))
+  return emptyCells
+}
+
+
+function calculateDistanceOfCells(freeVellsArray,rabbitCords) {
   const distanceArray = [];
   freeVellsArray.forEach((item) => {
     const distance = calculateDistanceFromRabbit(item, rabbitCords);
     distanceArray.push(distance);
   });
+  return distanceArray
 
+}
+function getClosestCell(distanceArray, freeVellsArray){
   const max = Math.min(...distanceArray);
   const index = distanceArray.indexOf(max);
-
-  placeWolvesIntoNewCells(array, freeVellsArray[index], item);
+  return freeVellsArray[index]
 }
+
 
 const equals = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 function placeWolvesIntoNewCells(array, wolvesCords, item) {
-  const rabbitCords = findCharacterCords(array, RABBIT);
-  const [x, y] = wolvesCords;
-  const [k, p] = item;
-  if (equals([x, y], rabbitCords)) {
-    showGameMessages("over")
-  } else {
-    array[x][y] = WOLF;
-    array[k][p] = EMPTY_CELL;
+  if(wolvesCords != undefined){
+    const rabbitCords = findCharacterCords(array, RABBIT);
+    const [x, y] = wolvesCords;
+    const [k, p] = item;
+    if (equals([x, y], rabbitCords)) {
+      showGameMessages("over")
+    } else {
+      array[x][y] = WOLF;
+      array[k][p] = EMPTY_CELL;
+    }
   }
+  
 }
 
-function calculateDistanceFromRabbit(arrayItem, rabbitCords) {
-  let [x, y] = arrayItem;
-  let [z, k] = rabbitCords[0];
+function calculateDistanceFromRabbit([x1, y1], [[x2, y2]]) {
 
-  return Math.round(Math.sqrt(Math.pow(x - z, 2) + Math.pow(y - k, 2)));
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
 
 function moveRabbitUp(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[0][0] === 0) {
-    directions.up[0] = array.length - 1;
+  if (rabbitCords[X][X] === 0) {
+    directions.up[X] = array.length - 1;
   }
   checkDir(directions.up, rabbitCords, array);
 }
@@ -168,8 +167,8 @@ function moveRabbitUp(array) {
 function moveRabbitDown(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[0][0] === array.length - 1) {
-    directions.down[0] = 0;
+  if (rabbitCords[X][X] === array.length - 1) {
+    directions.down[X] = 0;
   }
   checkDir(directions.down, rabbitCords, array);
 }
@@ -177,23 +176,23 @@ function moveRabbitDown(array) {
 function moveRabbitLeft(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[0][1] === 0) {
-    directions.left[1] = array.length - 1;
+  if (rabbitCords[X][Y] === 0) {
+    directions.left[Y] = array.length - 1;
   }
   checkDir(directions.left, rabbitCords, array);
 }
 function moveRabbitRight(array) {
   const rabbitCords = findCharacterCords(array, RABBIT);
   const directions = getEventDirection(rabbitCords);
-  if (rabbitCords[0][1] === array.length - 1) {
-    directions.right[1] = 0;
+  if (rabbitCords[X][Y] === array.length - 1) {
+    directions.right[Y] = 0;
   }
   checkDir(directions.right, rabbitCords, array);
 }
 
 function checkDir(newCords, napCords, array) {
   const [j, k] = newCords;
-  const [x, y] = napCords[0];
+  const [x, y] = napCords[X];
   if (array[j][k] == EMPTY_CELL) {
     array[j][k] = RABBIT;
     array[x][y] = EMPTY_CELL;
@@ -209,7 +208,7 @@ function checkDir(newCords, napCords, array) {
 }
 
 function getEventDirection(rabbitCords) {
-  let [x, y] = rabbitCords[0];
+  let [x, y] = rabbitCords[X];
   const direction = {
     up: [x - 1, y],
     down: [x + 1, y],
@@ -252,8 +251,8 @@ function createGameArray(gameAreaSize) {
 }
 
 function insertSingleCharacter(cord, myArray, character) {
-  const x = cord[0];
-  const y = cord[1];
+  const x = cord[X];
+  const y = cord[Y];
   myArray[x][y] = character;
 }
 
@@ -338,6 +337,7 @@ function showGameMessages(gameStatus){
   } else if(gameStatus === "win"){
     message.innerText = "You win"
   }
-
+  
   mainDiv.style.display = "block"
+  // window.removeEventListener("keydown", listener)
 }
